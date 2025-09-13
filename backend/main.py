@@ -19,8 +19,8 @@ from app.routers.institutions import router as institutions_router
 from app.routers.students import router as students_router
 from app.routers.ai import router as ai_router
 
-# Load environment variables
-load_dotenv()
+# Load environment variables from backend/.env
+load_dotenv(dotenv_path="backend/.env")
 
 # Database initialization
 async def init_db():
@@ -73,4 +73,4 @@ async def root():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="localhost", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

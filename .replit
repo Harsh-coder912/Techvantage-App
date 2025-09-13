@@ -1,4 +1,4 @@
-modules = ["nodejs-20", "web", "bash", "python-3.11"]
+modules = ["nodejs-20", "web", "bash", "python-3.11", "python3"]
 [agent]
 expertMode = true
 
@@ -18,6 +18,10 @@ author = "agent"
 task = "workflow.run"
 args = "Frontend"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Backend"
+
 [[workflows.workflow]]
 name = "Frontend"
 author = "agent"
@@ -30,10 +34,31 @@ waitForPort = 5000
 [workflows.workflow.metadata]
 outputType = "webview"
 
+[[workflows.workflow]]
+name = "Backend"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd backend && python simple_main.py"
+waitForPort = 8000
+
+[workflows.workflow.metadata]
+outputType = "console"
+
 [[ports]]
 localPort = 5000
 externalPort = 80
 
 [[ports]]
-localPort = 40065
+localPort = 8000
+externalPort = 8000
+
+[[ports]]
+localPort = 39619
 externalPort = 3000
+
+[deployment]
+deploymentTarget = "autoscale"
+run = ["bash", "-c", "cd backend && python main.py & npm run dev -- --host 0.0.0.0 --port 5000"]
+build = ["npm", "run", "build"]

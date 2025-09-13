@@ -6,7 +6,8 @@ const getApiUrl = () => {
     // In browser, use same domain but port 8000 for backend
     const currentDomain = window.location.hostname;
     if (currentDomain.includes('replit.dev')) {
-      return `https://${currentDomain.replace(/\.replit\.dev$/, '')}-8000.replit.dev/api`;
+      // Use the same base domain but replace port 5000 with 8000
+      return `https://${currentDomain}:8000/api`;
     }
   }
   return import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
