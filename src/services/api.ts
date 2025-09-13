@@ -1,7 +1,18 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
-// Define base API URL
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+// Define base API URL - use Replit domain for backend
+const getApiUrl = () => {
+  if (typeof window !== 'undefined') {
+    // In browser, use same domain but port 8000 for backend
+    const currentDomain = window.location.hostname;
+    if (currentDomain.includes('replit.dev')) {
+      return `https://${currentDomain.replace(/\.replit\.dev$/, '')}-8000.replit.dev/api`;
+    }
+  }
+  return import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+};
+
+const API_URL = getApiUrl();
 
 // Define token storage key
 const TOKEN_KEY = 'techvantage_auth_token';
